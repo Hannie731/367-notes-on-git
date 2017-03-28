@@ -1,0 +1,139 @@
+N vs. Nlog(N) vs. N 2
+	linear on the bottom
+	quasi-linear in the middle
+	quadratic on the top
+	y axis resources used
+	x axis the problem size
+	constant is a horizontal line
+
+Complexity Analysis:
+	Not concerned with particular problem size
+	Concerns with how resources used changes as problem size increses.
+
+Big-O Notation (worst case analysis)
+-Concept:
+	chracterize algos by their growth rate function(grf growth rate function)
+		Constant O(1)
+		Linear	 O(N)
+		quadraticO(N^2)
+	some growth rate functions:
+		1, logN, N, NlogN, N^2,|| N^3......Nto a power, 2^N, N! // later are expensive
+-Simplifying Equations
+	time(N) = T(N) = 4N^2 +3N - 11	// O(N^2)
+	1.drop lower order term
+	2.drop the multiplication constants
+-Formal Definition
+	A function T(N) is O(F(N)), if for some constant C and some number n0 such that T(N) <= C * F(N) for N > n0
+	N|	T(N)N+2|	F(N) = N|	C=2 CF(N)
+	1	3		1		2 // true from here down n0 = 1
+	2	4		2		4
+	3	5		3		6
+
+-Chosse the samllest grf that satisfies the formal definition
+
+Complexity of Java Code
+-Basic operations: anything that is not a control structure or method call; O(1) constant
+
+-Sequence of statements (sum of inidividual statements
+	statement1; O(1)
+	statement2; O(1)
+	...
+	statementk; O(1)
+		O(1)/O(k) >> O(1) if k is constant
+-if-else
+	if (cond) {
+	//if sequence of statements
+	}
+	else {
+	//else sequence of statements
+	}
+	Gcond+Gif >> O(max(Gcond,Gif))
+	or Gcond + Gelse >> O(max(Gcond,Gelse))
+	= O(max(Gcond,Gelse,Gif)
+	pick the part that does the most work
+-Basic loops
+	What is the problem size based on?
+	for (i = 0; i < j; i++) {
+		//sequence of statements
+	} // Gbody
+	based on j. if Gbody is O(1) = O(j)
+				O(N) = O(jN)
+				O(N2) = O(jN2)
+	= O(j*Gbody)
+-Nested loops
+What is the problem size based on?
+	for (i = 0; i < N; i++) {
+		for (j = 0; j < M; j++) {
+		//sequence of statements
+		} // body of the outer loop O(MGbody)
+	}// O(NMGbody)
+
+-Loops with nested method calls (assume problem size based on N)
+	for (i = 0; i < N; i++) {
+		f1(i); //assume O(1) // O(NG(i)) = O(N) = linear
+	}
+	for (i = 0; i < N; i++) {
+		f2(N); //assume O(N) // O(NG(N)) = O(N2) = quadratic
+	}
+	for (i = 0; i < N; i++) {
+		f3(i); //assume O(i) // must unroll the loop
+	}
+	f3(0) f3(1) ... f3(N-1)
+	O(0)  O(1)...   O(N-1)
+	sum = N(N-1)/2 = O(N2) quadratic
+
+-Practice - Complexity of Java Code
+method1
+What is the problem size based on?
+	public void method1(int[] A) {
+				    N
+		for (int i = 0; i < A.length - 1; i++)
+			method2(A, i); //Gm2 O(N-1-i)
+		}
+	i|	method2(A,i)|	gm2 = O(N-1-i)
+	0	m2(A,0)		N-1
+	1	m2(A,1)		N-2.....
+	N-2	m2(A,N-2)	N-1-(N-2) = 1
+	N-1 statement in total
+
+	(N-1)N/2 >> O(N2) quadratic
+method2
+	public void method2(int[] B, int s) {		  N
+		for (int i = s; i < B.length - 1; i++) // B.length - 1 - s
+			if (B[i] > B[i+1])	//Gcond O(1)
+				method3(B, i, i+1); //Gm3 O(1)
+	} //Gbody O(1)
+	O(N-1-s)
+method3
+	public void method3(int[] C, int x, int y) {
+		int temp = C[x];
+		C[x] = A[y];
+		C[y] = temp;
+		}	//O(3) >> O(1)
+
+NumberGuessing
+Algo 1: linear search
+a.c N/2
+b.c 1
+w.c N
+Algo 2: Binary search
+Log2N
+
+Comparing ListADT Implementations
+constructor, size, isempty all constant
+Add at end:
+	O(N)
+	O(1) with a tail reference
+Add at Index:
+	O(N) //expand + shift
+	O(N) //traverse
+Contains:
+	O(N)
+	O(N) //Linear seaches
+get (int):
+	O(1)
+	O(N) //traverse to get to the postion
+remove (int):
+	O(N) //shift
+	O(N) // traverse to find it
+(E)

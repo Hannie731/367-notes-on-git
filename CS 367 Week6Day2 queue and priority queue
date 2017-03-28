@@ -1,0 +1,123 @@
+Queue ADT
+-Concept
+	first in first out(fifo)
+	rear----front
+	    dcba
+	add(enqueue)	remove(dequeue)
+	rear		front
+	
+-Operation
+	boid enqueue(E item) - add at rear(the end of que)
+	E dequeue()	     - remove from the front //emptyQueueException(not a build in exception)
+	boolean isEmpty()
+-Implementing a using a Chain of Nodes
+	Is one option better than the other?
+	Option 1: front of queue is at head, rear of queue is at tail (winner)
+	[]>[|]>[|]
+	head	^
+		[]
+		tail
+	equeue 		dequeue
+	O(1)		O(1)
+	with tail
+	reference
+
+	Option 2: front of queue is at tail, rear of queue is at head
+	equeue		dequeue
+	O(1)		O(N)
+			must traverse to reset tail
+
+-Implementing a Queue ADT using an Array
+	Assume a shadow array is used so that expand is O(1).
+	Option 1: front of queue is at index 0, rear of queue is at index n-1.
+	    F 
+	[]-[ | | | | ]
+	    R R R R R
+	enqueue(item) O(1) with shadow array
+	dequeue()     O(N) have to shift
+
+	Option 2: front of queue is at index n-1, rear of queue is at index 0.
+	enqueue(item) O(N) must shift to make room
+	dequeue()     O(1)
+
+	Option 3: front of queue is at Front(F), rear of queue is at Rear(R)
+	    F F F F
+	[]-[ | | | | | | | ]
+	    R R R R R R R R
+	    R
+	F|R|OP
+	0|0|enq(A)
+	0|1|enq(B)
+	0|2|enq(C)
+	0|3|enq(D)
+	1|3|deq() A
+	1|4|enq(E)
+	1|5|enq(F)
+	1|6|enq(G)
+	2|6|deq() B
+	3|6|deq() C
+	3|7|enq(H)		//int increment(int i) {
+	3|0|enq(I)		//	if(i == q.length - 1)  return 0; else return  i+1;
+				//}
+				//creates a way to wrap index around array
+	
+-Implementing a Queue ADT using Circular Array
+	Concept: reuse free elements at front of array, only expand if array is full
+	
+	enqueue(item):
+		if(numItems == q.length) expand();
+		R = increment(R);
+		q[R] = item;
+		numItems++;
+	dequeue():
+		if(numItems <= 0) throw new  EmptyQueueException();
+		E temp  = q[F];
+		F = increment(F)
+		numItems--;
+		return temp;
+	expand():        F		      F
+		q[]>[E|F|C|D]  new q>[E|F|||||C|D] // works, linear
+		       R 		R
+				      F
+			       new q>[C|D|E|F||||] // how?
+					    R
+						source	destination	#of elemnt to cpy
+			       System.arrayCopy(q,F,	newq, 0,	q.length - F)
+			       System.arrayCopy(q,0,	newq, q.length-F,	   F)
+
+//Exam2
+Tree Terminology
+	H			//root level 1
+       / \
+      
+
+
+1. Which is the root? H
+2. How many leaves are there? C F D I (farthest from root)
+3. How many nodes are in the right branch/subtree of B? 3
+
+4. Which is the parent of G? B
+5. How many children does E have (degree of E)? 2
+6. Which is the sibling of E? G
+7. How many descendants does B have? 6
+8. What are the ancestors of C? A H
+
+9. What is the length of the path from B to D? B E D 3
+10. What is the height of the tree? 5
+11. What is the depth/level of J? 4
+
+Priority Queue ADT
+-Priorities
+	each item is assgined a number corresponding its priority
+	allow duplicates
+	highest priority is returned first
+		remove(max)or remove(min)
+-Concept:
+	Items returned in order of priority
+	goal: Fast access to Highest priority  Item
+-Operations:
+	void insert(Comparable item)
+	Comparable removeMax()
+	Comparable get()
+	boolean isEmpty()
+

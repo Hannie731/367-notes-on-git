@@ -1,0 +1,100 @@
+Exception Throwing – Signaling a Problem
+	*when a problem is detected, throw an exception
+		1. have a exception (new) to throw it
+		2. sned (throw one) the signal
+	*idea: detect and throw
+	*Java Syntax(how do we signal an exception):
+		throw exceptionObject;
+
+	*Example:
+		// remove from arraybag
+		if (numItems <= 0)  // detect
+			throw new EmptyBagException((); // signal
+				  // EMptyBagException should be defined
+
+Exception Handling – Resolving a Problem
+	1. put code that may cause an exception in a try block
+	2. put code that handles an exception in a catch block 
+	3. put code that should execute after the try block in a final block
+
+
+	*Java Syntax:
+		try {
+			// try block
+			code that might cause an exception to be thrown
+		} catch (ExceptionType1 identifier1) {
+			// catch block
+			code to handle exception type 1
+		} catch (ExceptionType2 identifier2) {
+			// catch block
+			code to handle exception type 2
+		}
+		... more catch blocks
+		finally {
+			// finally block - optional
+			code always executed when try block is entered
+		}
+	
+	*ExmapleL
+		try {
+			for(int i = 0; i < 1000; i++) {
+				bag.remove()
+			}
+		} catch(EmptryBagException e) {
+			system.out.println("remove caused EmptyBagException")
+		// program execution continues here even if exception ocurrs
+
+Exception Execution
+	*Normal Execution
+	- Start: top of main()
+		Sequential, selection, repetition, method calss;
+	- Executing: 
+		normal code(not in a try block)
+		codein a try block
+		code in the finally block
+	- Skip:
+		code in the catch block
+
+	- Switch to Exception Handling Execution:
+		if an exception is thrown
+
+Exception Handling Execution:
+	- Skip:
+		normalcode
+		remaining code in the try block
+		non-matching catch clause
+	- Excute:
+		code in the matching catch block
+		code in the finally block
+	- Switch back to Normal Execution:
+		if the exception is caught
+	-Searching for a Matching Catch:
+		Locally: in the same method, in a catch block with the try block
+		Remotely: if current method cannot catch, pass exception object to calling method
+	-Checking a Match
+		1. Match Found: exception object type matches the catch clause exception type, execute code in the matching catch clause, skip the other catch blocks, execute the code in the finally block, swithc back to normal execution
+		2. No Match Found: execute code in finally, past exception object to calling method
+
+
+-What is Output When:
+1. no exception is thrown
+main[
+A[
+B[after C,after D,B-finally]B
+after B,]A
+after A,after E,main-finally,]main
+
+2. methodE throws a YellowException?
+main[
+A[
+B[after C,after D,B-finally]B
+after B,]A
+after A,main-finally, CRASHED
+
+3. methodC throws a GreenException?
+main[
+A[
+B[main-green,main-finally]main
+
+4. methodD throws a GreenException?
+

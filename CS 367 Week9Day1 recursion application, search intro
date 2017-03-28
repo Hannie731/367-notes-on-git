@@ -1,0 +1,103 @@
+Towers of Hanoi
+-Algorithm
+	count: the number of disks
+	src: where it is
+	dest: where we want it to be
+	spare: the extra spindle to use
+
+	solveTowers( count, src, dest, spare ) {
+		if(count == 1) move 1 disk from src to dest
+		else{
+			solveTowers(count - 1, src, spare, dest)	// move top from source to spare
+			solveTowers(1, src ,dest , spare)	// move bottom one from source to destination
+			solveTowers(count - 1, spare, dest, src)	// move top from spare to destination
+	}
+-Complexity
+	Problem size N is numbers of disks
+	1.Equations
+	T(1) = 1; constant
+	T(N) = T(N-1) + T(1) + T(N-1)	// so we excluded the time consumption for base case
+	T(N) = 1 + 2T(N-1)
+	2.Table
+	N	TN
+	1	1
+	2	3
+	3	7
+	4	15
+	T(N) = 2^N - 1;
+	3.Verify
+	2^N - 1 = 2(2^(N-1) - 1) + 1
+	2^N - 2 = 2^N - 2
+	4.Complexity
+	O(2^N-1) = O(2^N)
+	
+Picking Lottery Numbers
+order does not matter, no dups, combinations matters but not permutations
+N Choose K: How many combinations of K things can you make from N things?
+Choose K different values from N
+-Recursive Definition:
+		1. have fav numb	2.dose not have
+(1	c(n,k) = C(N-1, K-1)	+	C(N-1, K)
+
+(2	base case: 
+		C(N, K) = 0 where K > N
+		C(N, K) = 1 where K = N
+		C(N, K) = 1 where k = 0		// empty set
+(3	problem size decreases by 1 for each recursive case
+(4	C(N-1, K-1) reaches k = 0 when k < n
+	C(N-1, K) reaches k = n when k < n
+
+-implementation:
+	int c(int n, int k) {
+		if(k>n) return 0;
+		if( k == 0 || k == n) return 1;
+		return c(n-1, k-1) + c(n-1, k);
+
+Execution Tree Tracing of c(n,k)
+	use" tree to trace execution when there are multiple recursive calls
+			c(6,2)
+		c(5,1)			c(5,2)
+	c(4,0)		c(4,1)
+		c(3,0)		c(3,1)
+			c(2,0)		c(2,1)
+				c(1,0)		c(1,1)
+	E.T.T used to diagram the execution of multiple recursive calls
+	it can reveal inefficiencies in recursive algo
+	once revealed, can address with modification of algo
+	(ie, add a lookup option for previously calculated value)
+
+Searching
+N-numItems
+-Linear search:
+	search one by one in the collection
+	L-collection X-target
+	boolean linSearch(L, pos, X) {
+		if( pos>=size()) return false;
+		if(X.equals(L.get(pos))) retur true;
+		return linSearch(L,pos+1,X);
+	}
+	T(0) = 1
+	T(N) = 1 + T(N-1)	O(N)
+-Binary Search: (must be sorted)
+	divide and conquer
+	booealn binSearch(L, first, last, X) {
+		
+	}
+
+
+Categorizing ADTs Part 1: based on Layout
+-Linear:
+	O-O-O-O
+	next/prev
+at most	1 pred
+	1 succ
+
+-Hierarchical:
+	parent/child
+	atmost 1 pred
+	0 or more succ
+-graphical:
+	(network)
+	pair-wise relationship
+	0 or more pred
+	0 or more succ

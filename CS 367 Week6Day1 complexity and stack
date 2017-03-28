@@ -1,0 +1,96 @@
+Complexity Caveats
+-Small Problem Size
+	complexity is not a good basis for choosing algo when prob size is small
+	T(N) = N^2 + 3 T(N) = 10N + 30
+	when N = 10
+	103		130
+	better
+-Same Complexity
+	if algo have same complexity analysis may wish to consider:
+	multiplication constants
+	lower oder terms
+	other asymyntotic analysis
+	best case - omega
+	average case -theta
+	upperbound little O T(N)<o(F(N))
+	complexity of other resources
+	what is the expected problem size
+Comparing ListADT Implementations
+-Space Requirements (memeory)
+	Problem size N is? number of item = N 
+	Array:each element plus extra capacity = a.length O(N)
+	Singly-Linked List: O(2N) = O(N)
+	Circular Singly-Linked List: O(2N) = O(N)
+	Doubly-Linked List: O(3N) = O(N)
+	Circular Doubly-Linked List: O(3N) = O(N);
+-Ease of Implementation
+	Array: Shifting, expand array with copy, or shadow array
+	ll: get linked correct: draw pictures, visualize accurately
+
+
+Returning N Papers to N Students
+-What is the complexity of each algorithm below
+	algo1:
+	best case: n students there
+	worst case: nobody there and have to do it for several days
+	all linear: n*O(i) = O(N)
+	
+	algo2:
+	best-case: 1+1+1+1.... O(N)
+	worst-case: N+N-1+...+2+1 O(N2)
+	average-case:O(N2)
+	
+	algo3:
+	O(NlogN)
+	log2N+log2(N-1)+.... = O(Nlog2N)
+	quasi-linear
+
+Shadow Array – Improving Array Resizing
+	if item is full have to expand
+	"Naïve" Approach:
+	1.create new array 2x length // O(1)
+	2.copy each item in items to new array // O(N)
+	3.reassign items to new array // O(1)
+	O(N) linear
+
+	"Shadow Array" Improvement
+	//keep items and shadow arrays(2x items.length)
+	//if items is full
+		1.cretae new array, 2x shadow.length
+		2.assign items to shadow(items = shadow)
+		3.shadow = new array
+		// O(1) + O(1) + O(1)
+	(4)1.place new item in items
+	(5)2.place new item in shadow
+	6.copy 1 item from items to shadow
+	// O(1) + O(1) + O(3)
+	// still overall O(1) constant
+	// only copy one item from items to shadow on each add.
+	
+Stack ADT
+-Concept
+	add and remove at the same end(top)
+	last in first out(lifo)
+-Operations
+	void push(E item) add at top
+	E pop() remove from top // empty stack exception
+	E peak() get top without remove // empty stack exception
+	boolean isEmpty()
+-Implementing using an Array
+	 Where should the top be located in the array?
+	1.top at index 0 // also shift the shadow array in pop
+	push pop peak
+	O(N) O(N) O(1)
+	2.top at numItems 
+	push pop peak
+	O(1) O(1) O(1)
+	//c with shadwo array when adding
+-Implementing using a Chain of Nodes
+	 Where should the top be located in the chain of nodes?
+	1.top at 1st node
+	push pop peak
+	O(1) O(1) O(1)
+	2.top at last node
+	push pop peak
+	O(1) O(N) O(1)
+	     //must reset tail for pop

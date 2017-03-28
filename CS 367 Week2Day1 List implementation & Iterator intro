@@ -1,0 +1,88 @@
+-Recall the List ADT
+	*Concept: A List is a general, position-oriented container that stores a contiguous collection of 			items where duplicates are allowed. It maintains relative ordering and uses zero-based 			indexing.
+	*Operation:
+	*Issues:
+-Compare ListADT with Java's List:
+	*Read javadocs
+	Similarity:Our list adt is a subset of java's list interface
+	Difference: add returns a boolean, any object can be passed to contains method instead of element 			    type E
+-Use ListADT example: remove
+	*what does the following code fragment do in general?
+		i sz items
+		0 5  abcde
+		1 4  bcde
+		2 3  bde
+		3 2  bd
+		:remove items at even indexes
+	*Assume myList is a ListADT. Write a code fragment to reverse the contents of myList without 		 using any additional ListADTs or other data structures (e.g., array):
+		ListADT reverseList = new ArrayList();
+		for(int i = myList.size() - 1; i >= 0; i--) {
+			E temp = myList.remove(i);
+			reverseList.add(temp);
+		}
+		myList = reverseList;
+		i sz items
+		4 5  abcde
+		3 4  abcd
+		2 3  abc
+		1 2  ab
+		0 1  a
+	       -1 0  none
+-Implementation - ListADT using a generic Array
+public class SimpleArrayList<E> implements ListADT<E> {
+	private E[] Items; //reference to array which doesnt exist yet
+	private int numItems;
+
+	public SimpleArrayList() {
+		numItems = 0;
+		items = (E[]) new Object[100];
+	}
+-Implementing contains
+	public booelan contains(E item) {
+		if (item == null) throw new IllegalArgumentException();
+		for(int i = 0; i < numItems; i++)
+			if (item.equals(items[i])
+				return true
+		return false;
+	}
+-Implmenting add at end:
+	What problem might occur with the following implementation:
+		public void add( E item ) {
+			if(item == null)
+			if(numItems == items.length)
+			//expand
+			items[numItems] = item;
+			numItems++;
+		}
+		private void expand() {
+			//make a new larger array twice as big
+			E[] = (E[]) new Object[items.length * 2]
+			//copy elements from items to the new array
+			for(int i = 0; i < numItems; i++)
+				a[i] = items[i];
+			//make items reference to the new array
+			items = a;
+			//the variable a goes away at the end of this method, yet the array itself wont 			//since the items is referencing it
+		}
+
+
+-Desgin - Iterator
+	*What are they?
+		-Objects used to track progress through a collection
+		-an abtraction of a pointer
+		-it stores a position in a particular collection
+		-its position can change
+		-The item at the position can be returned
+	*Coding:
+		Seperate Iterator from its container class
+	*Concept:
+		1. ask the container for an iterator
+		2. use the iterator to step through the items in the container
+	*Container's operations
+		Iterator<E> iterator() - returns an iterator to this collection that point at the first 		item in the collection
+	*Iterator's operations(s)
+		next() - returns the next item in the collection and advance the position of the iterator
+		hasNext() - return true iff there are more items in the collection
+			
+
+

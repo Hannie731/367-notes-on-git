@@ -1,0 +1,119 @@
+-Iterator In java api
+	Separate the idea of tracking current position in a container from the implementation of the container.
+	*HOW DO YOU GET AN ITERATOR?
+		if a container is iterable ,you can ask it for an iterator.
+		Iterable<T> is an interface in java.lang
+		Specifies the operation to get an iterator:
+
+		Iterator<T> iterator() -return an iterator<t>
+					-points to the 1st item in collection
+					-container may be empty can still get an iterator
+		the interface make this possible is iterable
+
+	*WHAT CAN YOU DO WITH AN ITERATOR ONCE YOU HAVE IT?
+		Iterator<E> interface in java.util
+		Specifies the operations that an iterator can do once you have the iterator:
+
+		Boolean hasNext() return true iff there are more items to process
+		E next() 	  return the current item, and advances current to next item
+		void remove()	  by throwing an UnsupportedOperationException //this method is optional
+
+
+-Use – Iterators examples: get iterator, print all
+	Suppose words is a SimpleArrayList<String> that implements the Iterable Interface.
+
+	*Write a code fragment that gets an iterator, named itr, from words.
+		Iterator<String> itr = words.iterator(); // any container that is iterable can be called 								 //the iterator method
+
+	*Write a code fragment that uses itr to print each item in words.
+		while(itr.hasNext()) {
+			System.out.println(itr.next());
+		}
+
+	*Next write a code fragment that uses itr to print the length of each item in words.
+		//should ask for a new iterator since the former one has gone to the end of the list
+		itr = words.iterator();
+		while(itr.hasNext()) {
+			System.out.println(itr.next().length());
+		}
+
+-Use – Iterators example:use to determine hasDups?
+	Assume SimpleArrayList<String> implements the Iterable Interface.
+	*Challenge: Complete the method using iterators to determine list contains duplicates.
+	public boolean hasDups(SimpleArrayList<String> list) {
+		if (list == null || list.isEmpty()) return false;
+		Iterator<String> itr1 = list.iterator();
+		Iterator<String> itr2 = list.iterator();
+		while(itr1.hasNext()) {
+			E temp = itr1.next()
+			while(itr2.hasNext()) {
+				if (temp == itr2.next()) return true;
+			}
+		}
+		return false;
+
+-Implementation – Indirect access vs Direct access
+	*Indirect Access: Iterator has access to the container, but not to the internal data sturcture
+			  the iterator can call the methods of the container
+			  the container construct the iterator by passing a reference to itself
+			  	new Iterator<E>(this);
+	*Direct Acess: the iterator has the acess to the internal data structure but not the container
+			the container constructs the iterator by passing references to the iternal data 			structure
+			in this case, the iterator can change the data in the data structure(but dont do 				this)
+			yet this is faster because of less method call. must be trusted.
+
+	Indirect Access is safer(always of indirect)
+
+-Implementation - Indirect Access SimpleArrayListIterator Class
+	import java.util.*;
+	public class SimpleArrayListIterator<E> implements Iterator<E> {
+		private SimpleArrayList<E> myList;
+		private int currPos;
+		public SimpleArrayListIterator(SimpleArrayList<E> list){
+			this.myList = list;
+			currPost= 0;
+		{
+		public boolean hasNext() {
+			return curr < myList.size();
+		}
+		public E next() {
+			if(!hasNext()) throw new NoSuchElementException();
+			E result = myList.get(currPos);
+			curPos++;
+			return result;
+		}
+		public void remove() throws UnSupportedOperationException{
+			throw new UnSupportedOperationException();
+		}
+
+-Implementation - Direct Access ArrayBagIterator Class
+	import java.util.*;
+	public class ArrayBagIterator<E> implements Iterator<E> {
+	private E[] items;
+	private int numItems;
+	private int currPost;
+	Public ArrayBagIterator(E[] items, numItems) {
+		this.items = items;
+		this.numItems = numItems;
+		this.currPos = 0;
+	public boolean hasNext() {
+		reutrn currPos < numItems;
+	}
+	public E next() {
+		if(!hasNext()) throw new NoSuchElementException();
+		return items[currPos++];
+	}
+
+-Making Array Bags Iterable
+	*Approach in Readings - Modify the BagADT Interface
+		import java.util.*;
+		public interface BagADT<E> extends Iterable<E>{
+			void add(E item);
+			E remove() throws NoSuchElementException;
+			boolean isEmpty();
+		}
+	*Also Modify the ArrayBag Class
+		public Iterator<E> iterator() {
+			return new ArrayBagIterator(items, numItems);
+		}
+	

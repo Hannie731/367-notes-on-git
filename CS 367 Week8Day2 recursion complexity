@@ -1,0 +1,137 @@
+Constructing Recursive Code
+-Key Questions:
+	Can you identify a smaller similiar problem?
+	what are they base cases
+	how does the problem size decrease
+	as the problem size decreases, will it reach a base case
+	
+Practice – ListADT
+ Write a recursive method that displays the values in a (non-null) list of strings.
+1.print one item, then call print on the rest of the list
+2.if list is empty just return
+3.rest of list decreases by 1
+4.yes, eventually rest of list is empty
+
+	void display(ListADT<String> list) {
+		if(list.isEmpty) return;	//explicit base case
+		System.out.println(list.remove(0));
+		display(list)
+	}
+--------------------------------------------------------------------------------------
+	void display(ListADT<String> list) {
+		if(!list.isEmpty) {		//implicit base case
+			System.out.println(list.remove(0));
+			display(list);
+		}
+--------------------------------------------------------------------------------------
+	void display(ListADT<String> list) {
+		display(list, 0)
+	}
+		
+	private void display(ListADT<String>, int currPos) {
+		if(currPos < list.size()) {	//implicit base case
+			System.out.println(list.get(currPos));
+			display(list, currPos+1)
+	}
+
+Making a Reversed Copy of a Chain of Nodes
+
+
+Practice – Array
+ Write a recursive method that counts the number of even values in an (non-null) array
+filled with integers.
+1. if currr value is even return 1 + evencount(rest of the array), else return 0 + evencount(rest of the array)
+2. rest of the array is empty
+3. decrease the size of rest of the array
+4. yes decreasing rest of array by one will ventually reach the base case
+
+	int evenCount(int[] array) {
+		return evenCount(array, 0)
+	}
+	private int evenCount(int[] a, int currPos) {
+		if (currPos < a.length) {
+			int even = 0;
+			if (a[currPos] % 2 ==0) even = 1;
+			return even + evenCount(a, currPos+1);}
+		return 0;
+	}
+
+
+			return[even + evenCount(a,2)]
+			even = 1
+evenCount(a, 1)		pos = 1 a[]---------------|
+						  |
+			return[even + evenCount(a, 1)]
+			even = 1
+evenCount(array, 0)	pos = 0 a[]---------------|
+						  |
+			return[] 		  |
+evenCount(array)	[array[]]-----------------|	
+main			[array[]]	>	[2|4]
+
+
+Analyzing Complexity of Recursive Methods
+-Options:
+1.informal reasoning
+2.use recurrence equation
+
+-Steps
+1.write equations T(N) - time equation
+	basecase  T(0) = 1 constant
+	recursive case T(N) = GRF for non-recursive code + T(problem size of recursive call)
+				one equation for each recursive call
+2.expand the equations using a table N | TN
+look for recognition pattern
+guess for solution
+3.verify your solution
+	-by substituting back into recurrence equations
+4.
+
+
+Practice – Complexity of Recursive evenCount
+Problem size N is
+1. Equations
+T(0) = 1
+T(N) = 1 + T(N-1)
+2. Table
+N	TN
+0	1
+1	1+T0 = 2
+2	1+T1 = 3
+TN = N+1
+3. Verify
+TN = 1 + T(N-1)
+N + 1 = 1 + N	// plg in TN = N + 1
+4. Complextiy
+	O(N+1)
+	O(N) Linear
+
+Practice – Strings
+ Write a recursive method that determines if a string is a palindrome.
+boolean isPalindrome(String s) {
+	if(s.length <= 1) return true;
+	return s.charAt(0) == s.charAt(s.length - 1) && isPalindrome(s.subString(1,s.length - 1);
+}
+
+Practice – Complexity of Recursive isPalindrome
+-Problem size N is the length of the string
+1. equations
+T0 = 1
+T1 = 1
+TN = 1 + T(N-2)
+2. table
+N	TN
+0	1
+1	1
+2	1 + T0 = 2
+3	1 + T1 = 2
+4	1 + T2 = 3
+5	1 + T3 = 3
+K	1 + T(K-2) = 1+ K/2
+3. verify
+TN = 1+ T(N-2)
+1+N/2=1+1+(N-2)/2
+1+N/2=1+N/2
+4.
+	O(N/2)
+	O(N)

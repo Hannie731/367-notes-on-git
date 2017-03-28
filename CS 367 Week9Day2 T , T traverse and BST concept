@@ -1,0 +1,133 @@
+General Tree
+-any node can have an arbitrary # of children
+-The Tree Node Class:
+class Treenode<T> {
+	private T data;
+	private ListADT<Treenode<T>> children;
+	...
+
+-draw a pic
+	[tree node			]
+	[data[]>[item]			]
+	[children[]>[item[]]>[ | | ]	]
+		    [numItems]
+
+	simplified:
+	data["a"]
+	children[ | | | ]
+		/
+		data[B]
+		children[||||]
+
+	more simplified:
+	A
+       /
+      B
+
+-The Tree Class:
+	public class Tree<T> {
+		private Treenode<T> root;
+		private int size;
+		public Tree() {
+			root = null;
+			size = 0;
+		}
+...
+-draw a pic:
+	root[\]
+	size[0]
+-draw a pic:
+	root[]>A
+	      / | \
+	     B  C  D
+	size[4]
+
+Determining Height of a General Tree
+Recall the height of a tree is the length of a path from the root to the deepest leaf.
+ Write a recursive definition for the height of a general tree.
+	height(t) = 0 if t is null
+		  = 1 if t is leaf
+		  = 1 + max(height of children)
+	from bottom to top
+ Complete the recursive height method based on the recursive definition.
+Assume the method is added to a Tree class having a root instance variable.
+	public int height() {
+		return height(root)
+	}
+	private int height(Treenode<T> t) {
+		if (t == null) return 0;
+//		if (t.getChildren().size() == 0) return 1;
+		int maxHeight = 0;
+		for (Treenode<T> child : t.getChildren()) {
+			if( height(child) > maxHeight)
+				maxHeight = height(child);
+		}
+		return maxHeight+1;
+	}
+
+
+Tree Traversals
+-Goal: visit every node in the tree exactly once
+	v- visit: do something with that node
+	c- children:traverse the children
+	--------------------------------------
+	binary tree: l for left child r for right child --- traverse that child
+
+-Level-order
+	top to bottom left to right
+	D    U R S    H C    N F
+	1      2       3      4
+
+-Pre-Order
+	General tree:
+	v c
+	DUHNFRSC
+	Binary tree:
+	v l r
+-post-order:
+	General tree:
+	c v
+	NFHURCSD
+	Binary tree:
+	l r v
+-in-order:
+	G T:
+	N/A
+
+	B T:
+	l v r
+
+Practice – Binary Tree Traversals
+ List the nodes using a pre-order traversal.
+	HACBGJFEDI
+ List the nodes using a post-order traversal.
+	CAFJGDIEBH
+ List the nodes using an in-order traversal.
+	CAHJFGBDEI
+	very first item is gonna be the left most
+	very last item is gonna be the right most
+
+Categorizing ADTs Part 2
+	position oriented: add remove lookup are based on position
+		list
+		stack
+		queue
+	value oriented:
+		priority queue
+		sorted list- "name" determines where it is added, where it is found
+		mapADT - items are represented by a pair, and the pair has a key and a value, keys must be unique and immutable, value is the data associated with that key
+		key value	
+		url content of the page
+		
+	in cs 367 we focus on the key value, but we assume there is data associated with that key
+	2 different key can have the same value
+	key > value is a one way relation
+
+Binary Search Tree (BST)
+-A value oriented ADT - duplicate value allowed but not the duplicate keys
+-Goal:
+	fast lookup O(log2N)
+		so far: array > binary search O(log2N) add/remove(log(N))(shift for insert)
+			linked nodes > linear search O(N) add/remove(log(1))
+
+	

@@ -1,0 +1,97 @@
+Java’s Comparable Interface
+	natural ordering - the order that comparable establishes
+	in java.lang package- no import needed
+
+	public int compareTo(T other);
+	usage:
+		a.compareTo(b)	a is the calling object(this) b is the other obj
+	returns:
+		negative value if a comes before b
+		positive value if a comes after b
+		0 if a equals b
+	in java:
+		use relational operators < <= > >= for primitive tyeps
+		use compareTo for reference types
+	Implementation must be consisitent
+		if (a.compareTo(b) == 0) then a.equals(b) is true
+		if (b.compareTo(a) == 0) then b.equals(a) is true
+		if a == null throw nullpointerexception
+		if b == null throw nullpointerexception
+
+Implementing a Priority Queue ADT using a Heap
+-Heap
+	min heap: the smallest value is highest priority
+	max heap: the largest value is highest priority <= assume this if not specified
+
+-Shape Constraint(complete binary tree)
+	1. full from root to 2nd to last level
+	2. last level is full from left to right
+-Ordering Constraint (max)
+	for every node N
+		N's priority(P) is greater thant or equal to the priority of all decendants
+
+Implementing Heaps(array)
+	root at index 1
+	for each node at index(i), the node's left child is at index(i*2) and right child is at index(i*2+1)
+	any given node's parent is at index(i/2) ----integer
+
+Draw the corresponding binary tree:
+		56		l1
+	       /  \
+	      42  37		l2
+	     / \  /  \
+	    38 14 12 26		l3 //full until here
+	  /  \  |
+	 29  16 8		l4 //full from left to right
+
+Inserting into a Max Heap
+-Algorithm
+	1.put the new item in next free element(preserve shape)
+	2.reheapify - restore the oder
+	3.increment numItem
+Given the following max heap:
+	|  |64|52|35|46|17|15|34|12|23|14|36 //compare 36 with 17 at index 5, then swap, compare with 52 at index 2, then do not swap any more // if parent is at index 0, also stop the swap
+
+	Show the heap after inserting 36:
+	|  |64|52|35|46|36|15|34|12|23|14|17
+
+	|  |64|52|35|46|36|15|34|12|23|14|17|57
+	Show the heap after inserting 57:
+	|  |64|52|57|46|36|35|34|12|23|14|17|15 // swap with 15 at index 6, then swap, compare with 35 at indexon 3, swap, compare with 64 at index 1, stop swap
+	
+
+-Complexity (what is max swaps?) height of the tree
+	H4
+	N12
+	N = 2^H - 1(the last node in that level)
+	log2(N+1) = log2(2^H)
+~	log2(N) = H >>>>>> O(log2(N))
+	better than linear in gr
+
+
+Inserting into a Max Heap (cont.)
+-PriorityQueue Class Instance Variables:
+	private Comparable[] queue;
+	private int numItems;
+-Pseudo-code
+	public void insert(Comparable item) {
+		if item  == null, throw illegalargumentexception
+		if queue is full, expand
+		1. place the item in next available
+		2. reheapify
+			set child to new index
+			set done to false
+			while not done:
+				set parent to child
+				if parent == 0, set done to true
+				else if parent > child, set done to true
+				else swap(parent, child)
+		3. increment numItems
+
+Removing from a Max Heap
+-Algorithm
+	1.remove max(save in temp)
+	2.replace root with the last item
+	3.reheapify - check oder at each level
+	4.decrement numItems and return temp
+

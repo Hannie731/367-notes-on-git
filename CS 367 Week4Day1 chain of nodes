@@ -1,0 +1,126 @@
+Listnode Class
+class Listnode<E> {
+	private E data;
+	private Listnode<E> next;
+
+	public Listnode(E d) {
+	this(d, null);
+	}
+	public Listnode(E d, Listnode<E> n) {
+		data = d;
+		next = n;
+	}// 2 basic constructors
+
+	public E getData() { return data; }
+	public Listnode<E> getNext() { return next; } //accessor
+
+	public void setData(E d) { data = d; }
+	public void setNext(Listnode<E> n) { next = n; } // mutators
+}
+
+Practice: Using Listnodes
+-Draw a memory diagram corresponding to the given code:
+	assume code is in main()		Call Stack | Heap
+	Listnode<String> n1 = null;		n1[\]
+	Listnode<Integer> n2 = 
+	new Listnode<Integer>(11);		n2[] -----> [11|\]
+	Listnode<String> n3 = 
+	new Listnode<String>("list", n2) compiler erro n2 is not a listnode of string, n2 change to n1 to fix this
+
+						n3[] -----> ["list"|\]
+	Listnode<String> n4 =
+	new Listnode<String>("" + 11);		n4[] -----> ["11"|\]
+
+Recall Chain of Linked Nodes Data Structure
+-ListnodeClass
+...
+	Show how the memory diagrams change as a result of executing the code beneath each:
+	head.setNext(head.getNext().getNext().getNext().getNext()); --- null in brackets, thus
+	== head.setNext(null);      [] --->[ |\]
+
+	
+	head.getNext().getNext().setNext(head);
+	[] --->[|] ---> [|] --->[| ]
+		^-----------------|
+	it's a circular chain of nodes
+
+	n1.setNext(curr.getNext());
+	curr.setNext(n1);
+	[] --->[|] ---> [|] ---> [| ] ---> [|]
+	head			 ^	   ^
+	[] ----------------------| |-----| |
+	curr				 | |
+	[] ----------------------------> [|\]
+	n1
+	inserting a n1 into the list of node
+
+Practice: Making a Chain of Nodes
+-Create a chain of Listnodes containing the Strings
+-"yippie", "ki", and "yay" (as shown below) in as few statements as you can.
+
+	Listnode<String> head = new Listnode<String>("yippie", 
+				new Listnode<String>("ki", 
+				new Listnode<String>("yay"));
+
+	Listnode<String> head = new Listnode<String>("yay");
+	head = new Listnode<String>("ki", head); // first get the new node set up and then reassignment
+	head = new Listnode<String>("yippie", head);
+
+	Option 2 is better suited to using a chain of nodes to implement a list
+-Practice: Traversing a Chain of Nodes
+Assume head points to the first node in a chain of Listnodes containing Strings.
+Write a code fragment that counts the number of strings in the chain of nodes.
+	int count = 0;
+	while(head != null) {
+		count++;
+		head = head.getNext();
+	}
+	// works but head no longer references the first node of the chain
+	
+	Listnode<String> curr = head;
+	while(curr != null) {
+		count++;
+		curr = curr.getNext();
+	}
+	// works and the head still points to the first node
+
+	// when traversing a chain of node, use another variable (curr)
+	// so you don't lose the reference of the head.
+	
+Practice: Adding a Node at the Chain’s End
+-Assume head points to the first node in a chain of Listnodes containing Strings.
+-Write a code fragment that adds a node containing “rear” to the end of the chain of nodes.
+-You may assume the chain has at least one item.
+	//traverse through the chain until we reach the last noe
+	//create a new node and link to the last node
+	Listnode<String> curr = head
+	while (curr.getNext() != null) {
+		curr = curr.getNext();
+	}
+	curr.setNext(new Listnode<String>("rear"));
+
+Practice: Removing a Node from a Chain
+-Assume head points to the first node in a chain of Listnodes containing Strings.
+- Write a code fragment that removes the third item from the chain of nodes.
+-You may assume the chain has at least three items.
+	head.getNext().setNext(head.getNext().getNext().getNext());
+	// messy, need something general
+	
+	// use curr to traverse to the n-1 node	
+	// set next of curr (n-1) to the value of "next" of n node
+	curr.setNext(curr.getNext().getNext());
+
+Java Visibility Modifiers
+-public public class ArrayList<E>
+all class can use
+-private private Object[] items
+only the class created it can access
+-protected protected String name
+sub class
+-package class Listnode<E>
+no modifier means package level, same package can access
+same folder same package
+
+Listnode.java
+LinkedList.java
+LinedListIterator.java

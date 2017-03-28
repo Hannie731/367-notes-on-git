@@ -1,0 +1,163 @@
+Recall the List ADT
+-Concept
+-Operations
+-Issues
+-We seperate the interface from implementation
+	/listADT/ <-implements {SimpleArrayList
+		  <-implements {ScoreList
+		  <-implements {LinkedList -singly linked list
+					   -with header node
+					   -with tail node/no header node
+
+-LinkedList - Implementing ListADT using a Chain of Nodes (singly linkedlist with head reference)
+	public class LinkedList<E> implements ListADT<E> {
+
+		private Listnode<E> head; // reference of a Listnode<E>
+		private int numItems;
+
+	public LinkedList() {
+		head = null;
+		numItems = 0;
+	}
+	public void add(E item) { // add at end, item cannot be null
+		if (item == null) throw new IllegalArgumentException();
+		//create a new Listnode, itme as data
+		Listnode<E> newnode = new Listnode<E>(item);
+		//handle special case of no nodes yet
+		if (head == null) head = newnode;
+		else {  //general case, there are nodes
+			//traverse to the last node in the chain
+			Listnode<E> cur = head;
+			while(cur.getNext() != null)
+				cur = cur.getNext();
+			//set next of cur which is the last node now to the new node
+			cur.setNext(newNode);
+		}
+		numItem++
+	}
+	
+	public E get(int pos) {
+		if (pos < 0 || pos >= numItems)
+			throw new IndexOutOfBoundsEception();
+		//traverse the che correct position
+		Listnode<E> cur = head;
+		for (int p = 0; p < pos; p++)
+			cur = cur.getNext();
+		//return the item at that node;
+		return cur.getData;
+	}
+	// the other add, remove, isEmpty, checkout reading on more tips
+	public void add(E item, int pos) {
+		if(item == null) throw new IllegalArgumentException();
+		if( pos < 0 || pos >= numItems) throw new IndexOutOfBoundsException
+		Listnode<E> newnode = new Listnode<E>(item);
+		Listnode<E> curr = head;
+		if (pos = 0) {
+			newnode.setNext(head);
+			head = newnode;
+		}
+		for (int i = 0; i < pos - 1) {
+			curr = curr.getNext();
+		}
+			newnode.setNext(curr.getNext)
+			curr.setNext(newnode);
+	}
+	public E remove(int pos) {
+		if (isEmpty) throw IndexOutOfBoundsException;
+		if (pos < 0 || pos >= numItems) throw IndexOutOfBoundsException;
+		Listnode<E> curr = head;
+		if (pos = 0) head = head.getNext();
+		else{
+			for (int i = 0; i < pos - 1; i++) {
+				curr = curr.getNext();
+			}
+			Listnode<E> temp = curr.getNext();
+			curr.setNext(curr.getNext().getNext();
+			return temp;
+		}
+	}
+
+Add a header node(in addition to, not the head reference)
+-Concept: eliminate the special case in add where head == null;
+	[\] -> [\|\]		[] -> [\| ] -> [|]
+	head   header		head  header	0
+	headdernode doesn't store a data, the empty list is when head references header node and header 	node hasNext == null
+-Code Example
+	public class LinkedList<E> implements ListADT<E> {
+		private Listnode<E> head;
+		private int numItems;
+		public LinkedList() {
+			head = new Listnode<E>(null);	//this is not a data node, it is a header node
+			numItems = 0;
+		}
+	public void add(E item) {
+		if (item == null) throw new IllegalArgumentExceptions();
+		Listnode<E> newnode = new Listnode<E>(item);
+		Listnode<E> curr = head;
+		while (curr.getNext() != null)
+			curr = curr.getNext();
+		curr.setNext(newnode);
+	numItems++;
+	}
+
+Add a Tail Refercence(without header node)
+-Concept:
+	Avoid traversing through all node just to add a node
+	maintain a reference to the last node called tail
+	[\]head		
+	[\]tail
+-Code Example
+	public class LinkedList<E> implements ListADT<E> {
+		private Listnode<E> head;
+		private Listnode<E> tail;
+		private int numItems;
+	public LinkedList() {
+		head = null;
+		tail = null;
+		numItems = 0;
+	}
+	public void add(E item) {
+		if (item == null) throw new IllegalArgumentExceptions();
+		Listnode<E> newnode = new Listnode<E>(item);
+		//Special Case: empty list
+		if (head == null) {
+			head = newnode;
+			tail = newnode; //make a tail reference
+			// or tail = head = newnode;
+		}
+		//General Case: non-empty list
+		else {
+			tail.setNext(newnode);
+			tail = newnode;
+			// or tail = tail.getNext();
+		}
+		numItems++;
+	}
+
+Implementing LinkedListIterator
+-Indirect acess to D.S[refernce] -> LinkedList
+		      [cur = 0 ]
+get
+pos 0 1 2 3 4 - total 15 steps to here
+stps1 2 3 4 5
+// indrect is bad idea
+
+-Direct acess to internal D.S [refernce] -> node
+get
+pos 0 1 2 3 4
+stps1 1 1 1 1
+
+	import java.util.*;
+	public class LinkedListIterator<E> implements Iterator<E> { // direct
+		private Listnode<E> curr;	
+		LinkedListIterator Listnode<E>() {
+		}
+		public boolean hasNext() {
+		}
+		public E next() {
+			if () throw new NoSuchElementException();
+		}
+		public void remove() {
+				
+		}
+	}

@@ -1,0 +1,33 @@
+factorial(3)
+	|6
+3*factorial(2)
+	|2
+2*factorial(1)
+	|1
+1*factorial(0)
+	|
+	1
+
+public static int sum(Listnode<jInteger> node) {
+	if (node = null) return 0;
+	return null.getData() + sum(null.getNext());
+}
+
+public static String vowels(String str) {
+	if (str.equals("")) return "";
+	if (str.subString(0,1).equals("a"||"....)
+		return str.subString(0,1) + vowels(str.subString(1);
+	else
+		return str.subString(1);
+}
+
+N	TN
+1	1
+2	3
+4	7
+8	15
+TN = 2N - 1
+2N-1 = 1 + 2*(N-1)
+2N-1 = 1 + 2N - 2
+2N-1 = 2N-1
+

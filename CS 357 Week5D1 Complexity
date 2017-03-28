@@ -1,0 +1,126 @@
+Iterable Interface – The Rest of the Story
+-Java’s For-Each Loops
+	ListADT<String> list ... //assume list of words
+	//replaced
+	Iterator<String> itr = list.iterator();
+	while (itr.hasNext())
+		System.out.println(itr.next());
+	//for each alter
+	for(String a : list) // list must be iterable
+		System.out.println(...)
+
+-Problem - Implementing Multiple Interfaces
+	public class LinkedList<E> implements ListADT<E>, Iterable<E> { ... }
+	ListADT<String> list = new LinkedList<String>();
+	Iterator<String> itr = list.iterator(); // compiler erro, since listADT is not iterable
+						// list is of type ListADT at compile time
+
+	Iterable<String> list = new LinkedList<String>();
+	Iterator<String> itr = list.iterator();	// cannot use list operation on list
+	// list.add() will fail since it's not a type of listADT at compile time
+
+	LinkedList<String> list = new LinkedList<String>	//ok
+	Iterator<String> itr = list.iterator();			//ok
+	// lost some generality
+	// list = SimpleArrayList<String>() now will fail
+
+-Solution - Sub-interfaces (make our ListADT also iterable)
+	public interface ListADT<E> extends Iterable<E> {
+		// list ops
+		// inherited iterator() from Iterable interface
+	}
+
+	// dont make classes iterable, make the adt iterable
+
+Making LinkedList Iterable
+	public class LinkedList<E> implements ListADT<E> {
+		private Listnode<E> head;
+		private int numItems;
+		public LinkedList() { ... }
+		public void add(E item) { ... }
+		public E get(int pos) { ... }
+		.
+		.
+		.
+		public Iterator<E> iterator() {
+			return new LinkedListIterator<E>(head);
+		}
+	}
+
+Double and Circular Linking (chain of nodes)
+-Doubly-Linked Chains of Nodes
+	define a new list node type,
+	Dblistnode
+
+	[previous|data|next]
+	
+	[head]->[\| | ]->[ | | ]->[ | |\]
+	      <-       <-	<-
+	(arrow starts in the box, pointing at the preripheral of the other box
+
+	// insert a new node
+	[newnode] -> [ | | ]
+	// insert at pos 1, traverse to pos 0, same for pos2 and traverse to pos1
+	// cur is the previous of the inserting position
+	cur.getNext().setPrev(newNode);
+	newnode.setNext(cur.getNext());
+	cur.setNext(newnode);
+	newnode.setPrev(cur);
+-Circular Singly-Linked Chains of Nodes
+	//if 1st last and position do not matter
+	// then just keep a current reference
+	[]-[]-[]-[]
+	|--------|
+	cur->[]
+	// if first last position do matter, just keep tail reference
+	// "head" is same thing as tail.getNext()
+-Circular Doubly-Linked Chains of Nodes
+	// if 1st alst and position do not matter
+	// then jsut keep a current reference
+	// if they do matter, keep head or head reference
+	// by convention it's head
+
+Analyzing Algorithm Efficiency
+-Complexity
+	Complexity analysis is not performance analysis
+	1. used to compare different algos that solve the same problem
+	2. used to characterize the use of resources as problem size gets bigger
+	// resources: time and spaces
+	// time : number of operations
+	// space: amount of memory required
+	// problem size: some aspect of problem that when change affects the amount of resources used
+-If problem size doubles and the number of operations:
+	stays the same -> constant
+	doubles -> linear
+	quadruples -> quadratic
+-Complexity classification are a 1st order analysis
+	focus is on most significant term
+
+Example: Complexity Analysis of Giving a Toast
+	What is problem size? -> number of guests
+	what is the algo?
+		1.fill the glass(one bottle)
+		2.raise the glasseach person raises their own)
+		3.clink the glass of all guests
+		4.drink(all together)
+	// classification 
+		1.linear
+		2.constant
+		3.quadratic
+		4.constant
+	what is the dominant operation?(change the most when problem size changws) clink
+	how can we characterize the clink
+		person 1 clinks with persons 2 to n	n-1
+		person 2 clinks with persons 3 to n 	n-2
+		...................................
+		n-2			n-1 to n	2
+		n-1			n		1
+		n 			no one 		0
+
+							total clinks
+							n(n-1)/2
+							n^2/2 - n/2
+		first order analysis only care about n^2
+		thus quadruples, quadratic
+		
+

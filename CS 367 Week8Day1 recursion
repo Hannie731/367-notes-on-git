@@ -1,0 +1,115 @@
+Java’s types: Stack, Queue, PriorityQueue, Deque
+-MAY NOT USE THESE TYPES ON PROGRAMMING ASSIGNMENTS, unless explicitly allowed.
+-In java.util package
+	Interface Queue<E> (Can be FIFO)
+	methods that throws exception on error
+	methods that return special value on error
+-class PriorityQueue<E> (Not FIFO)
+	• order based on natural ordering via Comparable
+	• can use a Comparator
+-class Deque<E> (Double-ended queue)
+	Deque<Integer> deque = new Deque<Integer>();
+	deque.addFirst
+	deque.addLast
+	deque.removeFirst
+	deque.removeLast
+	deque.peekFirst
+	deque.peekLast
+
+Call Stack Tracing - Displaying a Singly-Linked Chain of Nodes
+-Method Call:
+	print(head);
+
+-Iterative Implementation
+	void print (Listnode<String> curr) {
+		while (curr != null) {
+			System.out.println(curr.getData());
+			curr = curr.getNext();
+		}
+	}
+-Recursive Implementation:
+	void print(Listnode<String> curr) {
+		if (curr == null) return;
+			System.out.println(curr.getData());
+			print(curr.getNext());
+		}
+-How do these work?
+recursive trace:
+stack		heap
+print[curr[\]]
+print[curr[]]
+	^----------------
+print[curr[]]           |
+	^------------   |
+print[curr[]]	    |   |
+	^--------   |   |
+main[head[]] -> [A]>[B]>[C]
+
+output:
+A
+B
+C
+
+Recursion vs. Iteration
+-Recursion is like iteration: both used for repetition
+	iteration: loop with conditional expression and some sectinel value
+		   repeat the body loop
+	recursion: base case, recursive case
+-Recursion is NOT like iteration:
+ Each loop iteration: 
+	iteration: uses same activation record and smae parameters and local variables
+	recursion: multiple activation recrod, multiple parameters and local variables
+
+ A loop with a bad stopping condition
+	iteration: infinite loop
+	recursion: stack overflow
+-Rules for Recursion:
+	1. at least 1 base case
+	2. every recursive case must make progress towards one of the base cases
+
+Recursion
+-What is it? When a method calls itself
+	main>A>B>A indirect recursion
+	
+-Why use it? it solves some problems elegantly
+	     it solves some complex problems concisely
+	     it is not used because it's faster
+	     it is not to use less memory
+-How would you modify the print method to display
+ a singly-linked chain of nodes in reverse order?
+
+Factorials: n!
+-Consider the factorial of n (assume n >=0):
+	n! = n x (n-1) x (n-2) x (n-3) x . . . x 2 x 1
+	6! = 6 x 5 x 4 x 3 x 2 x 1 = 720
+-Method Call:
+	factorial(6);
+-Iterative Implementation:
+	int factorial(int n) {
+		int result = 1;
+		for (; n > 1; n--)
+			result = result * n;
+		return result;
+	}
+-Recursive Definition:
+	n! = n * (n - 1)!
+ Complete the Recursive Implementation:
+	int factorial(int n) {
+		if(n > 0) return n * factorial(n-1);
+		if(n == 0) return 1;
+		throw new illegalargumentexception();
+
+
+Constructing Recursive Code
+ Write a recursive method that computes nm
+ that is, it computes double n raised to an int power m?
+-recursive definition:
+	n * n^m-1 if m > 0
+	1 if m =0
+	1/n^-m
+-recursive implementation:
+	double power(double n, int m) {
+		if (m> 0) return n * power(n, m-1);
+		if (m==0) return 1;
+		return 1/power(n, -m); // when m < 0
+	}

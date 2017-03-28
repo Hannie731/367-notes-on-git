@@ -1,0 +1,111 @@
+Week1 Day1
+-What makes software good?
+	*it works
+	*easy to use and modify (reuse exisiting softwares that already works)
+	*resonably efficient
+
+-What makes code reusable?
+	*documentations
+	*modular (functions, method, procedures)
+		classes of java
+		module (collection of classes), package
+		frameworks
+	*generality - not just int values but any type
+	 	a collection cna store any type
+									*bradon
+									*bdomash@wisc.edu
+-collection
+-What is a collection
+	*Definition: A gourp of similar related items in a shared space
+	*related terms:
+		items - the individual members of the collection
+		container - structure used to store the items
+-What operation can do on a collection?
+	*sort, add, remove, search, swap, replace, is empty
+-fundamental operation
+	*add, remove, search, 
+
+-Example: Bags
+	*Concept: general container, can store any types of item
+		  can store different types of items in same bag
+		  can store duplicate items
+		  unordered
+		  no explicit internal structures
+		  add is fast
+		  remove is fast (no search)
+		  lookup is slow (must search)
+	*Operation:
+		add an item
+		remove any item
+		isEmpty
+	*Problems with bags:
+		add when bag is full
+		remove when it's empty
+
+-ADT
+	*3How: to impelement the ADT
+		-define a class, or many class that impelent the ADT
+	*1What is ADT: set of operations (bagADT ListADT)
+		-interface in java
+	*2Why: So apps can use that type (use the type without worrying about implementations)
+		-if ADT is defined well, and there are multiple implemntations, many apps can reuse the 		 softwares
+
+-ADT vs. Data structure
+	*ADT: specifies what you can do (ops) with the ADT?
+		-javadocs - conceptual descriptions, list of operations
+		-java interface - code the ADT in java
+	*DS: A construct within a class that implements our ADT that is used to store the collection items
+		-coding the ADT as an interface, implementing that interface with a class, allows java to 			 enforece our ADt design choices
+
+-Designing an integer bag ADT
+	* Conceptual Description: Gneral collection of integers, allows duplicate items
+
+	*public interface " code the interface
+		import java.util.NoSuchElementException;
+		public interface IntegerBagADT {
+			public void add(Integer item);
+			public Integer remove() throws NoSuchElementException;
+			public boolean isEmpty();
+			//all public abstract by default
+		}
+	*Coding issues:
+		add when full: expand bag
+		remove when empty, throw NoSuchElementException (java.util)
+
+-Example 1: Using the Integer Bag ADT
+	- Write a code fragment to put the numbers 0 to 99 into an Integer Bag ADT named bag.
+		IntegerBagADT bag = new...; //assume bag has been instantiated here
+		for (int i = 0; i <100; i++)
+			bag.add(i); // int i is autoboxed to an Integer
+-Java Autoboxing Review
+	Integer x = 3; // autoboxed
+
+	stack|heap
+	x    | Integer containing 3
+	
+	int y = x; // autounboxed
+	
+	stack|heap
+	y 3  |
+
+	int z = y;
+
+	stack|heap
+	z 3  |
+
+-Example 2:Using the Integer Bag ADT
+	-Complete the printBag method
+		public static void printBag(IntegerBagADT bag) {
+			while(!bag.isEmpty) {
+				System.out.println(bag.remove());
+			}
+		}
+-Gneralizing the Integer Bag ADT
+	-What class in Java can be used to reference any java object? Object
+	-What modification are needed to generalize our Integer Bag ADT? All Integer to Object
+
+	-Comments: In java, Objet reference can refers to any type.
+		* more general, can store any type of item.
+		* a single bag can have different types.
+		* Better solution: Java Generics.
+

@@ -1,0 +1,111 @@
+-Implementing bagADT using an Array of object referece
+	import java.uitl.NoSuchElementException;
+	public class ArrayBag implements BagADT {
+
+		//instance varaibles
+		private int numItems;
+		private Object[] items;
+
+		//constructor
+		public ArrayBag(){
+			numItems = 0;
+			items  = new Object[10];
+		}
+
+		//BagADT methods
+		public boolean isEmpty(){
+			return numItems <= 0;
+			}
+
+		public Object remove() throws NoSuchElementException{
+			if (isEmpty()) throw new NoSuchElementException();
+			return items[--numItems];
+			}
+
+		public void add(Object item) {
+			//if items is full, expand the array
+			//addthe item at end at index numItems
+			//increment numItems
+		}
+
+-Recall the Bag ADT
+	WHy? So application developers can use BagADt and ArrayBag
+	What? bagADT - add, remove, isEmpty
+	How? ArrayBag class implements BagADT
+	*Seperate what we can do(ops) from how they are implemented.
+
+	Why are we using the Object calss in our BagADT interface?
+	More general - store any item type
+		     - store item of diffrent types
+	
+Use - BagADT and Casting
+-Using a general ADT and its impelemntation to instantiate a container
+	ADT.names Container.names = new IMPL.class.name();
+	(interface type) (indentifier) (the class that implements adt)
+
+-Write a statement that makes a Bag ADT container named bag.
+	BagADT bag = new ArrayBag();
+-Wirete a code Fragment that adds 6 dice to bag.
+	for (int i = 0; i < 6; i++) {
+		bag.add(new Die());
+	}
+-Why doesnt the following code compile?
+	assign a Object to Die (down cast) Cannot implicitly cast a super class to a child class
+					   (Can explicitly from super to sub)-> Die myDie = (Die) bag.remove();
+	//Check first
+	Object obj = bag.remove();
+	if (obj instanceof type Die) Die myDie = (Die) obj();
+
+-Java Generics - A Better Way to Make a General Bag ADT
+*What changes are needed to make the interface below generic?
+	import java.util.*;
+	public interface BagADT<E>{   //E is the type parameter, can be any letter, a variable name aka 				      //place holder.
+		void add E item;
+		E remove() throws ....;
+		....;
+	}
+
+	1. java generics specify one or more type parameters.
+	   -list the type after the interface name
+	   -put type parameter(s) between brackets
+	   EX: <E>   <E,T>
+	2. replace the specific type or types with the type parameter.
+-Implementation - generic BagADT
+*What changes are needed to make the implementaiton below generic?
+	public class ArrayBag<E> implements BagADT<E> {
+		private E[] items;
+		private int numItmes;
+
+		public ArrayBag() {
+			itmes = new E[100];   // X items = (E[]) new Object[100]; (java compiler cannot 					      //find exact type E)
+			numItem = 0;
+		}
+
+		boolean isEmpty()......;
+		void add(E item) ....;
+		E remove() ....;
+	}
+	
+	1.specify the type parameters which typically match the parameters of the interface
+	2.replace the specify type with the type parameter name
+
+-Use - Generic Bag ADT
+*How do we use a generic interface and its generic implementation to make a container?
+	ADT.name<item.type> container.name = new Implementing.class.name<item.type>();
+*Write a code fragment to make one generic Bag ADT container storing String objects and another one storing Die objects.
+	BagADT<String> bag1 = new ArrayBag<String>();
+	BagADT<Die> bag2 = new ArrayBag<Die>();
+*Write a statment to add “cs367” into the appropriate container.
+	bag1.add("cs367");
+*What happens with...?
+	bag2.add("cs367");  //compile erro
+*Can we make a single generic Bag ADT container that can store both String and Die objects at the same time?
+	BagADT<Object> bag3 = new ArrayBag<Object>():
+
+-Design - List ADT
+*Concept
+	General container
+	Postion oriented position 0 - n-1  // n is the number of items
+	Contiguous (no gaps)
+	Duplicates allowed																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								
+	Maintain the relative ordering

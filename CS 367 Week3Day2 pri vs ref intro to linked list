@@ -1,0 +1,186 @@
+What is Output When:
+6:methodD throws a RedException?
+main[
+A[
+B[after C,B-red,B-finally]B
+after B,]A
+after E,main-finally]main
+
+throws clause – Passing the Buck
+
+catch the exception in a loop:
+try in a loop: multiple times can be executed
+loop in a try: once exception the whole method done
+
+-Checked Exceptions vs. Unchecked Exceptions
+	checked: compiler will check that you have:
+		a. catch block - to catch exception
+		b. throws - the exception
+		FileNotFoundException, EOFException, IOException, MalFormURLException
+		(cannot deal with it)
+	unchecked: compiler will not require catch or throws:
+		(aka runtime exceptions(doesnt mean they happen at runtime))
+		(a programmer's fault, can be avoided)
+	
+-Java Syntax
+	... methodName(parameter list)
+		throws ExceptionType1, ExceptionType2, ... {
+		...
+	}
+	(we dont have to do this with the runtime exceptions)
+
+-Example
+	public static void main(String[] args) throws IOException { ...
+
+	throws clause must be put on each method that may throw that exception.
+
+Defining a New Exception Class
+-Checked
+	public class MyException extends Exception(exsisiting checked exception type){
+	}
+-UnChecked
+	public class MyException extends RuntimeException(exisitng unchecked exception type){
+	}
+-Example (if you want to support an optional message)
+	public class EmptyBagException extends Exception {
+		public EmptyBagException() {
+			super();
+		}
+	// if the constructor with a string is defiend, must also override the default constructor 
+	// given free like this, because inheritance doesnt give the super class constructor
+
+		public EmptyBagException(String msg) {
+			super(msg);
+		}
+	}
+	// if you want a constructor that accepts a string msg
+
+Primitive vs. Reference Types: Assignment
+-Primitives
+	assume code is in main()
+	int x, y, z;
+	x = 11;
+	y = x; // place copy of vlaue in x in y
+	z = x; // place copy of value in x in z
+	z = 33;
+	y = 22;
+
+	Call Stack
+	x = 11;
+	y = 11(overriden) 22;
+	z = 11(overriden) 33;
+
+	
+	What does each variable contain after the code above executes?
+	x 11 y 22 z 33;
+	(for primitive types, assigned value is copied.
+-References
+	assume code is in main()
+	ArrayList<String> x, y, z;
+	x = new ArrayList<String>();
+	y = x;
+	z = x;
+
+	y = new ArrayList<String>();
+	z.add("Computer");
+	y.add("Science");
+
+	Call Stack		Heap
+	x-----------------------AL(Computer added by z)
+	y-----------------------|(then overriden
+	z-----------------------|
+	
+	y-----------------------AL2(Science added by y)
+
+
+	What does each ArrayList contain after the code above executes?
+	x computer y science z computer
+
+	What do x, y and z contain?
+	addresses. for reference types, assigned value is also copied.(only difference is that the 		assigned value is addresses)
+
+Primitive vs. Reference Types: Parameter Passing
+-Primitive
+	Given:
+	void mod1(int x) {
+		x = 42;
+	}
+	Execute code in main():
+	int x = 11;
+	int[] y = {11, 22, 33};
+	mod1(x);
+	mod1(y[2]);
+
+	Call Stack		Heap
+	(main)
+	y-----------------------11,22,33
+	x = 11
+
+	(mod1)
+	x = 11 (overriden) 42 // copied
+	// memory freed, no effect on x
+
+	(mod1)
+	x = 33 (overriden) 42 // copied
+	// memory freed, no effect on y
+
+
+	What does variable x and array y in main contain after the code above executes?
+	x 11 y 11,22,33
+	
+	What happens if we call mod1(y) in main?
+	compiler erro
+
+-Reference
+	Given:
+	void mod2(int[] x) {
+		x[0] = 21;
+	}
+	void mod3(int[] x) {
+		x = new int[x.length];
+		x[0] = 42;
+	}
+
+	Execute code in main():
+	int
+	x = 11;
+	int[] y = {11, 22, 33};
+	mod2(y);
+	mod3(y);
+
+	Call Stack		Heap
+	y-----------------------11(overriden by mod2) 21,22,33
+	x=11
+	
+	mod2
+	x-----------------------|y 11(overriden) 21,22,33
+	// memory freed, x goes away
+	
+	mod3
+	x-----------------------|y
+	x-----------------------Brand new array
+	x-----------------------bna 42
+	// memory of mod3 goes away, the bna is collected by garbage collection
+	
+	What does variable x and array y in main contain after the code above executes?
+	x 11 y 21,22,33
+
+	What happens if we call mod2(x) in main?
+	compiler erro
+
+New Data Structure - Chain of Linked Nodes
+-The Data Structure
+	item		item
+	  ^		^
+	data - next  > data - next > d - n   > |item|\(null)|
+	 (a node)	(a node)     (a node)	(a node)
+
+	// each node references data and the next node or the value null.
+
+-Array vs.	Chain of Nodes
+ static		dynamic
+ fixed size	(can grow and shrink)
+ cannot incre	add new nodes
+ canoot insert	can insert and remove without shifting
+ or remove
+ without shifting
